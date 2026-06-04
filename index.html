@@ -3,30 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل Termux للمبتدئين</title>
+    <title>محاكي Termux الاحترافي</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #111; color: #eee; padding: 20px; line-height: 1.6; }
-        h1 { color: #00ff00; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .card { background-color: #222; padding: 15px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #333; }
-        .error-title { color: #ff3333; font-weight: bold; }
-        code { background-color: #333; color: #00ff00; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+        /* تعريف الألوان الأساسية للثيم الافتراضي */
+        :root { 
+            --bg-color: #141923; 
+            --term-bg: #000000; 
+            --text-color: #02bf02; /* اللون الأخضر الفسفوري للتيرمكس */
+            --prompt-color: #00ff00; 
+            --input-color: #ffffff; 
+        }
+        
+        body { 
+            font-family: 'Ubuntu Mono', 'Courier New', Courier, monospace; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            margin: 0; 
+            padding: 15px; 
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+        }
+
+        .wrapper { width: 100%; max-width: 750px; }
+        
+        /* تصميم صندوق التيرمكس ليكون نفس التطبيق */
+        .terminal-box { 
+            background-color: var(--term-bg); 
+            border: 1px solid #222; 
+            border-radius: 6px; 
+            padding: 15px; 
+            min-height: 420px; 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+            position: relative;
+        }
+
+        /* شريط التحكم العلوي المطور */
+        .terminal-header { 
+            color: #777; 
+            font-size: 13px; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid #1a1a1a; 
+            padding-bottom: 8px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            font-family: Arial, sans-serif; 
+        }
+
+        /* الأزرار الملونة الثلاثة */
+        .window-buttons { display: flex; gap: 6px; }
+        .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+        .dot-red { background-color: #ff5f56; }
+        .dot-yellow { background-color: #ffbd2e; }
+        .dot-green { background-color: #27c93f; }
+
+        .output-area { 
+            flex-grow: 1; 
+            overflow-y: auto; 
+            white-space: pre-wrap; 
+            margin-bottom: 10px; 
+            color: #d1d5db; 
+            font-size: 14.5px; 
+            line-height: 1.6; 
+            padding-right: 5px;
+        }
+
+        .input-line { display: flex; align-items: center; position: relative; }
+        .prompt { color: var(--prompt-color); font-weight: bold; margin-left: 8px; white-space: nowrap; }
+        
+        /* خانة إدخال الأوامر المخفية والشفافة */
+        .cmd-input { 
+            background: transparent; 
+            border: none; 
+            color: var(--input-color); 
+            font-family: inherit; 
+            font-size: 16px; 
+            width: 100%; 
+            outline: none; 
+            padding: 0;
+            caret-color: var(--text-color); /* مؤشر الكتابة الأصلي */
+        }
+
+        .instruction-tag { 
+            background: #1a202c; 
+            border: 1px solid #2d3748; 
+            padding: 12px; 
+            border-radius: 6px; 
+            margin-top: 15px; 
+            color: #a0aec0; 
+            font-family: Arial, sans-serif; 
+            font-size: 13px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
-    <h1>مرحباً بك في دليل حل مشاكل Termux 🐧</h1>
-    <p>هذا الموقع التعليمي مصمم خصيصاً لمساعدتك في تخطي الأخطاء الشائعة خطوة بخطوة مخصصة للهواتف.</p>
+<div class="wrapper">
+    <div class="terminal-box" id="termBox">
+        <div class="terminal-header">
+            <div class="window-buttons">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+            </div>
+            <span>com.termux ~ session #1</span>
+            <span style="color: #444;">Vercel_Host</span>
+        </div>
+        
+        <div class="output-area" id="output">==================================================
+🤖 مرحباً بك في نظام الفحص والمحاكاة الذكي v4.0 🤖
+==================================================
 
-    <div class="card">
-        <p class="error-title">❌ مشكلة 1: خطأ الاتصال بالمستودعات (Repository Error)</p>
-        <p>السبب غالباً يعود لتثبيت النسخة القديمة من متجر Play. الحل الأفضل هو الانتقال لنسخة متجر F-Droid المستقرة.</p>
+[+] تم الاتصال بالسيرفر بنجاح... [ONLINE]
+[+] بيئة العمل آمنة وجاهزة للتجربة 🚀
+
+مهمتنا هنا هي مساعدتك على احتراف تطبيق Termux وتخطي كل العقبات.
+
+💡 جرب الآن كتابة الأوامر التالية في الشاشة:
+• اكتب [termux-style] لتغيير شكل وألوان الترمينال بالكامل 🎨
+• اكتب [pkg install tools] لمحاكاة تثبيت الأدوات الأساسية 📦
+• أو ببساطة: الصق أي كود خطأ (Error) يواجهك في هاتفك هنا ليقوم النظام بتحليله وإعطائك الحل فوراً!
+
+~ ابدأ بكتابة أول أمر الآن، ودعنا نتعلم معاً...</div>
+        
+        <div class="input-line">
+            <span class="prompt" id="termPrompt">~ $</span>
+            <input type="text" id="command" class="cmd-input" autofocus autocomplete="off">
+        </div>
     </div>
 
-    <div class="card">
-        <p class="error-title">⚙️ الخطوة الأولى بعد التثبيت:</p>
-        <p>لتحديث الحزم وتثبيت الأدوات الأساسية بنجاح، قم بتشغيل الأمر التالي:</p>
-        <code>pkg update && pkg upgrade -y</code>
+    <div class="instruction-tag">
+        💡 جرب الأوامر الحية: <span style="color: #fff;">termux-style</span> لتغيير الأنماط أو <span style="color: #fff;">pkg install tools</span> للمحاكاة الفورية!
     </div>
+</div>
 
+<script>
+    const input = document.getElementById('command');
+    const output = document.getElementById('output');
+
+    // الأخطاء والحلول حقتنا
+    const ERROR_SOLUTIONS = {
+        "permission denied": "❌ خطأ في الصلاحيات!\n💡 التشخيص: تيرمكس لا يملك صلاحية الوصول لذاكرة الهاتف الداخلية.\n➡️ الحل: اكتب الأمر التالي لإعطائه الصلاحية:\ntermux-setup-storage",
+        "not installed": "❌ خطأ عدم وجود حزمة الـ SSH!\n💡 التشخيص: الأداة غير مثبتة في نسختك الحالية وتيرمكس يحتاج لتثبيت حزمة الاتصال الآمن.\n➡️ الحل: اكتب هذا الأمر في تيرمكس الحقيقي لتثبيتها:\npkg install openssh -y",
+        "ffmpeg": "❌ خطأ تعطل التحديثات والمستودعات (Repository Error)!\n💡 التشخيص: السيرفر الافتراضي الذي يحاول تحميل حزمة ffmpeg يواجه عطلاً.\n➡️ الحل: اكتب الأمر التالي وغير السيرفر الافتراضي إلى سيرفر آخر مستقر:\ntermux-change-repo",
+        "modulenotfounderror": "❌ خطأ مكتبة بايثون مفقودة (Module Not Found)!\n💡 التشخيص: سكربت البايثون الخاص بك يحتاج مكتبة خارجية لم تقم بتحميلها بعد.\n➡️ الحل: ثبت المكتبة الناقصة عبر أداة pip:\npip install speech_recognition"
+    };
+
+    // التركيز على خانة الإدخال عند الضغط في أي مكان بالشاشة السوداء
+    document.getElementById('termBox').addEventListener('click', () => {
+        input.focus();
+    });
+
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const cmdText = input.value.trim();
+            const lowerCmd = cmdText.toLowerCase();
+            if (cmdText === "") return;
+
+            output.innerHTML += `\n<span style="color: var(--prompt-color);">~ $ ${cmdText}</span>`;
+            
+            if (lowerCmd === "clear") {
+                output.innerHTML = "تم تنظيف الشاشة... اكتب أوامرك الآن.";
+            } 
+            else if (lowerCmd === "ls") {
+                output.innerHTML += "\n<span style="color: #449dab; font-weight:bold;">📁 tools_box</span>  <span style="color: #449dab; font-weight:bold;">📁 themes</span>  📄 index.html  📄 vercel.json";
+            } 
+            else if (lowerCmd === "pwd") {
+                output.innerHTML += "\n/data/data/com.termux/files/home";
+            } 
+            else if (lowerCmd === "pkg install tools") {
+                simulateInstallation();
+            } 
+            else if (lowerCmd === "termux-style") {
+                output.innerHTML += "\n🎨 [قائمة الأنماط المتاحة]:\n1) اكتب 'style 1' للنمط المظلم (Cyberpunk 🌌)\n2) اكتب 'style 2' للنمط الكلاسيكي (Matrix 🟢)\n3) اكتب 'style 3' للنمط الهادئ (Dracula 🧛)";
+            } 
+            else if (lowerCmd === "style 1") {
+                document.documentElement.style.setProperty('--bg-color', '#1a0033');
+                document.documentElement.style.setProperty('--term-bg', '#0d001a');
+                document.documentElement.style.setProperty('--text-color', '#ff00ff');
+                document.documentElement.style.setProperty('--prompt-color', '#00ffff');
+                output.innerHTML += "\n🌌 تم تطبيق نمط Cyberpunk المظلم بنجاح!";
+            } 
+            else if (lowerCmd === "style 2") {
+                document.documentElement.style.setProperty('--bg-color', '#001100');
+                document.documentElement.style.setProperty('--term-bg', '#000000');
+                document.documentElement.style.setProperty('--text-color', '#00ff00');
+                document.documentElement.style.setProperty('--prompt-color', '#00cc00');
+                output.innerHTML += "\n🟢 تم تطبيق نمط Matrix الأخضر بنجاح!";
+            } 
+            else if (lowerCmd === "style 3") {
+                document.documentElement.style.setProperty('--bg-color', '#282a36');
+                document.documentElement.style.setProperty('--term-bg', '#1e1f29');
+                document.documentElement.style.setProperty('--text-color', '#f8f8f2');
+                document.documentElement.style.setProperty('--prompt-color', '#bd93f9');
+                output.innerHTML += "\n🧛 تم تطبيق نمط Dracula البنفسجي الهادئ!";
+            } 
+            else {
+                let found = false;
+                for (let key in ERROR_SOLUTIONS) {
+                    if (lowerCmd.includes(key)) {
+                        output.innerHTML += `\n${ERROR_SOLUTIONS[key]}`;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    output.innerHTML += `\ntermux: ${cmdText}: command not found\n💡 نصيحة: اكتب 'termux-style' لرؤية الأنماط، أو الصق خطأ حقيقي واجهك لحله.`;
+                }
+            }
+            
+            input.value = "";
+            output.scrollTop = output.scrollHeight;
+        }
+    });
+
+    function simulateInstallation() {
+        output.innerHTML += `\nجاري تثبيت الحزم الأساسية (git, python, nano, curl)...\n[=                   ] 10% جاري الاتصال بالمستودعات...`;
+        
+        setTimeout(() => {
+            output.innerHTML += `\n[=====               ] 35% تحميل حزمة python وحزمة git...`;
+            output.scrollTop = output.scrollHeight;
+        }, 600);
+
+        setTimeout(() => {
+            output.innerHTML += `\n[==========          ] 60% تفكيك الحزم وتجهيز البيئة الافتراضية...`;
+            output.scrollTop = output.scrollHeight;
+        }, 1200);
+
+        setTimeout(() => {
+            output.innerHTML += `\n[====================] 100% ✨ تم المحاكاة بنجاح! جميع الأدوات الأساسية جاهزة الآن على موقعك.`;
+            output.scrollTop = output.scrollHeight;
+        }, 1800);
+    }
+</script>
 </body>
 </html>
