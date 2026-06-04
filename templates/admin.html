@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة إدارة السيرفر السرية</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; color: #333; padding: 20px; }
+        .admin-card { max-width: 500px; margin: 40px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; text-align: center; }
+        label { font-weight: bold; display: block; margin-top: 15px; color: #555; }
+        input[type="text"], input[type="password"], textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        textarea { height: 100px; font-family: monospace; }
+        .btn-save { background: #27ae60; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-save:hover { background: #219653; }
+        .alert { background: #e8f8f0; color: #27ae60; padding: 10px; border-radius: 6px; text-align: center; margin-bottom: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="admin-card">
+    <h2>🛠️ لوحة تحكم ومراقبة السيرفر</h2>
+    <p style="text-align:center; color:#7f8c8d; font-size:14px;">تعديل محتوى الموقع وتحديث الأوامر من المتصفح مباشرة</p>
+    
+    {% if message %}
+        <div class="alert">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST">
+        <label>🔐 كلمة سر الإدارة المنشأة في بايثون:</label>
+        <input type="password" name="password" placeholder="أدخل كلمة السر لتأكيد الهوية" required>
+
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+        <label>📝 نص الترحيب داخل شاشة الترمينال البداية:</label>
+        <textarea name="welcome_msg">{{ current_welcome }}</textarea>
+
+        <label>💡 التلميح الظاهر بأسفل الموقع للمبتدئين:</label>
+        <input type="text" name="custom_tip" value="{{ current_tip }}">
+
+        <button type="submit" class="btn-save">حفظ التغييرات وتحديث الموقع فوراً 🚀</button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 15px;"><a href="/" style="color:#3498db; text-decoration:none; font-size:14px;">← العودة للموقع الرئيسي</a></p>
+</div>
+
+</body>
+</html>

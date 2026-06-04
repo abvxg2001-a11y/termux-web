@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مختبر Termux الذكي</title>
+    <style>
+        :root { --bg-color: #0b0f19; --term-bg: #000000; --text-color: #00ff00; --prompt-color: #00ff00; --input-color: #ffffff; }
+        body { font-family: 'Courier New', Courier, monospace; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; transition: 0.3s; }
+        .wrapper { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; color: #ffffff; font-family: Arial, sans-serif; }
+        .sub { text-align: center; color: #8b949e; margin-bottom: 25px; font-family: Arial, sans-serif; }
+        .terminal-box { background-color: var(--term-bg); border: 2px solid #333; border-radius: 8px; padding: 20px; min-height: 350px; display: flex; flex-direction: column; }
+        .terminal-header { color: #666; font-size: 12px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; display: flex; justify-content: space-between; font-family: Arial, sans-serif; }
+        .output-area { flex-grow: 1; overflow-y: auto; white-space: pre-wrap; margin-bottom: 15px; color: #e6edf2; font-size: 15px; line-height: 1.5; }
+        .input-line { display: flex; align-items: center; }
+        .prompt { color: var(--prompt-color); font-weight: bold; margin-left: 10px; white-space: nowrap; }
+        .cmd-input { background: transparent; border: none; color: var(--input-color); font-family: inherit; font-size: 16px; width: 100%; outline: none; padding: 0; }
+        .instruction-tag { background: #161b22; border: 1px solid #30363d; padding: 15px; border-radius: 6px; margin-top: 20px; color: #8b949e; font-family: Arial, sans-serif; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <h1>🐧 نظام Termux التفاعلي المطور</h1>
+    <p class="sub">لوحة تحكم ذكية متصلة بالإنترنت</p>
+
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>termux_emulator_v3.5</span>
+            <span>أونلاين 🟢</span>
+        </div>
+        
+        <div class="output-area" id="output">{{ welcome }}</div>
+        
+        <div class="input-line">
+            <span class="prompt">~/my_website $</span>
+            <input type="text" id="command" class="cmd-input" autofocus autocomplete="off">
+        </div>
+    </div>
+
+    <div class="instruction-tag" id="tipArea">
+        {{ tip }}
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('command');
+    const output = document.getElementById('output');
+
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const cmdText = input.value;
+            if (cmdText.trim() === "") return;
+
+            output.innerHTML += `\n<span style="color: var(--prompt-color);">~/my_website $ ${cmdText}</span>`;
+            
+            const formData = new FormData();
+            formData.append('text', cmdText);
+
+            fetch('/terminal-input', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.action === "clear") {
+                    output.innerHTML = "تم تنظيف الشاشة...";
+                } else if (data.action === "install_animation") {
+                    output.innerHTML += `\n${data.output}\n[====================] 100% ✨ تم التثبيت المبرمج وبنجاح!`;
+                } else if (data.action.startsWith("change_theme_")) {
+                    if(data.action.endswith("cyber")) {
+                        document.documentElement.style.setProperty('--bg-color', '#1a0033');
+                        document.documentElement.style.setProperty('--text-color', '#ff00ff');
+                    } else if(data.action.endswith("matrix")) {
+                        document.documentElement.style.setProperty('--bg-color', '#001100');
+                        document.documentElement.style.setProperty('--text-color', '#00ff00');
+                    }
+                    output.innerHTML += `\n${data.output}`;
+                } else {
+                    output.innerHTML += `\n${data.output}`;
+                }
+                output.scrollTop = output.scrollHeight;
+            });
+            input.value = "";
+        }
+    });
+</script>
+</body>
+</html>
